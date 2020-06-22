@@ -22,6 +22,7 @@ const int tempsTestPH = 60000;
 const int maintenanceButtonPin = 10; //gestion des boutons
 const int maintenanceLEDPin=9;
 bool maintenance=false;  
+const int TempsMaintenance = 15;
 
 const int testpHButtonPin = 8;
 const int testpHLEDPin = 7;
@@ -131,9 +132,29 @@ void loop()
   
   if (maintenance){ //Maintenance : on ne prend plus de mesures
     digitalWrite(maintenanceLEDPin,LOW);
-    delay(10000);
+    int minute=TempsMaintenance;
+    int seconde=0;
+    while(seconde != 0 || minute != 0){
+    screen.clear();
+    screen.setCursor(0,0);
+    screen.print("Maintenance");
+    screen.setCursor(0,1);
+    screen.print("Patientez  ");  
+    screen.print(minute);
+    screen.print(":");
+      if(seconde<10){screen.print("0");}
+    screen.print(seconde);
+    
+      if(seconde == 0 && minute!=0){
+        minute--;
+        seconde=60;
+      }
+      delay(1000);
+      seconde--;
+    }
     
   }
+   
   
   if (testpH){ //Mesure du pH 
     digitalWrite(testpHLEDPin,LOW);
@@ -154,15 +175,18 @@ void loop()
   }
   if(millis() - printTime > printInterval)   //Every 800 milliseconds, print a numerical, convert the state of the LED indicator
   {
-    Serial.print("Voltage:");
-        Serial.print(voltage,2);
-        Serial.print("    pH value: ");
-    Serial.println(pHValue,2);
+    screen.clear();
+    screen.setCursor(0,0);
+    screen.print("pH = ");
+    screen.print(pHValue);
+    
         
         printTime=millis();
   }
 
     compteurPH+=100;
+
+    
     delay(100);
     }
   }
@@ -182,22 +206,22 @@ void loop()
   }
   if(millis() - printTime > printInterval)   //Every 800 milliseconds, print a numerical, convert the state of the LED indicator
   {
-    Serial.print("Voltage:");
-        Serial.print(voltage,2);
-        Serial.print("    pH value: ");
-    Serial.println(pHValue,2);
+    
         pHOffset=7-pHValue;
-        printTime=millis();
+        screen.clear();
+         screen.setCursor(0,0);
+         screen.print("pH = ");
+         screen.print(pHValue);
+         printTime=millis();
   }
-
-      delay(3000);
+    delay(3000);
     
   }
   
   if (calibAcid){ // Calibration sonde pH dans solution acide
     digitalWrite(calibAcidLEDPin,LOW);
-    int compteurPH=0;
-    while(compteurPH<tempsCalibPH){
+    int compteurPHA=0;
+    while(compteurPHA<tempsCalibPH){
     static unsigned long samplingTime = millis();
   static unsigned long printTime = millis();
   static float pHValue,voltage;
@@ -211,15 +235,14 @@ void loop()
   }
   if(millis() - printTime > printInterval)   //Every 800 milliseconds, print a numerical, convert the state of the LED indicator
   {
-    Serial.print("Voltage:");
-        Serial.print(voltage,2);
-        Serial.print("    pH value: ");
-    Serial.println(pHValue,2);
-        
-        printTime=millis();
+    screen.clear();
+    screen.setCursor(0,0);
+    screen.print("pH = ");
+    screen.print(pHValue);
+    printTime=millis();
   }
 
-    compteur+=100; 
+    compteurPHA+=100; 
     delay(100);
     }
   }
