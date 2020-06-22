@@ -21,3 +21,5 @@ Continuer le rapport x) : à faire
 S'interesser au reseau wifi (carte léonardo) : fait
 
 EN ATTENTE DU MATOS POUR MAPPER ET VOIR SI LA SONDE Ph FONCTIONNE
+
+Interface utilisateur (pas urgent du tout)
