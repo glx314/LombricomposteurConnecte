@@ -1,0 +1,31 @@
+CAPTEURS
+
+Température :
+
+	sonde S18B20
+	
+	
+
+
+pH :    sonde : de base, "posée" à coté, bouton "prendre le pH" 
+	
+
+	
+Gaz :
+	
+	prix, necéssité
+	
+	oxygène -> grove O2 mais taux d'oxygène à mesurer : taux lacunaire. pas évident -> inutile
+
+	C/N -> peut passer par une mesure de l'ammoniac (MQ-137 Ammonia) -> si augmente trop, trop d'azote donc + de carbone
+
+
+FINAL : 
+
+	Need : 
+		une sonde DS18B20 ?
+		grove moisture sensor (+ converter grove/headerPin) ou FC-28
+		Sonde pH
+		(MQ137 Ammonia Sensor) on verra plus tard
+		boutons x4
+	
