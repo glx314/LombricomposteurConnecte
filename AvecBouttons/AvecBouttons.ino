@@ -1,14 +1,24 @@
-#include <DS18B20.h>
+#include <OneWire.h> 
+#include <DallasTemperature.h>
+/********************************************************************/
+// Data wire is plugged into pin 2 on the Arduino 
+#define ONE_WIRE_BUS 2 
+/********************************************************************/
+// Setup a oneWire instance to communicate with any OneWire devices  
+// (not just Maxim/Dallas temperature ICs) 
+OneWire oneWire(ONE_WIRE_BUS); 
+/********************************************************************/
+// Pass our oneWire reference to Dallas Temperature. 
+DallasTemperature sensors(&oneWire);
 #include <LiquidCrystal.h>
 
 LiquidCrystal screen(12,11,A2,A3,A4,A5);
 
-const int DS18B20_PIN=2;
-DS18B20 ds(DS18B20_PIN);
 float DS18B20_temperature; //réglages température
 
 const int humiditySensorPin=A0; //réglages humidité
-int humidity=0;
+int humidity;
+int pHumidity;
 
 const int pHSensorPin = A1 ; //réglages pH
 float pHOffset=0.00;
@@ -86,6 +96,7 @@ void setup()
   Serial.begin(9600);
   screen.begin(16,2);
   screen.clear();
+  sensors.begin();
   pinMode(maintenanceButtonPin, INPUT_PULLUP);
   pinMode(testpHButtonPin,INPUT_PULLUP);
   pinMode(calibNeutreButtonPin,INPUT_PULLUP);
@@ -94,7 +105,7 @@ void setup()
   pinMode(testpHLEDPin,OUTPUT);
   pinMode(calibNeutreLEDPin,OUTPUT);
   pinMode(calibAcidLEDPin,OUTPUT);
-  pinMode(DS18B20_PIN,INPUT);
+  pinMode(ONE_WIRE_BUS,INPUT);
   pinMode(humiditySensorPin,INPUT);
   
 }
@@ -110,13 +121,15 @@ void loop()
   testpH=not(digitalRead(testpHButtonPin));
   calibNeutre=not(digitalRead(calibNeutreButtonPin));
   calibAcid=not(digitalRead(calibAcidButtonPin));
-
+  
   if(compteur==3000){
-  DS18B20_temperature = ds.getTempC(); //Mesure température
+    sensors.requestTemperatures();
+  DS18B20_temperature = sensors.getTempCByIndex(0); //Mesure température
   Serial.println(DS18B20_temperature);
   
   humidity=analogRead(humiditySensorPin);
-  Serial.println(humidity); // ATTENTION : TESTER LES VALEURS POUR MAPPER EN RECEVANT LE CAPTEUR
+  pHumidity=map(humidity,0,680,0,100);
+  Serial.println(pHumidity); // ATTENTION : TESTER LES VALEURS POUR MAPPER EN RECEVANT LE CAPTEUR
 
   screen.clear();
   screen.setCursor(0,0);
