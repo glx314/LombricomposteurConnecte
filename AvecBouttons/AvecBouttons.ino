@@ -27,16 +27,17 @@ const int printInterval = 800;
 const int ArrayLenth = 40 ;
 int pHArray[ArrayLenth];
 int pHArrayIndex=0;
-const int tempsTestPH = 60000;
+const int tempsTestPH = 30000; //RISQUE D ETRE TROP GRAND, PENSER A CHANGER LE TYPE
 
 const int maintenanceButtonPin = 10; //gestion des boutons
 const int maintenanceLEDPin=9;
 bool maintenance=false;  
-const int TempsMaintenance = 15;
+const int TempsMaintenance = 0;
 
 const int testpHButtonPin = 8;
 const int testpHLEDPin = 7;
 bool testpH=false;
+int compteurPH=0;
 
 const int calibNeutreButtonPin=6;
 const int calibNeutreLEDPin = 5;
@@ -45,7 +46,7 @@ bool calibNeutre=false;
 const int calibAcidButtonPin=4;
 const int calibAcidLEDPin=3;
 bool calibAcid=false;
-int tempsCalibPH = 60000;
+int tempsCalibPH = 30000;
 int compteur=0;
 
 double avergearray(int* arr, int number){
@@ -137,7 +138,7 @@ void loop()
   screen.print(DS18B20_temperature);
   screen.println("C");
   screen.setCursor(0,1);
-  screen.print("Humidité :");
+  screen.print("Humidite :");
   screen.print(humidity);
   screen.print("%");
 
@@ -146,7 +147,7 @@ void loop()
   if (maintenance){ //Maintenance : on ne prend plus de mesures
     digitalWrite(maintenanceLEDPin,LOW);
     int minute=TempsMaintenance;
-    int seconde=0;
+    int seconde=10;
     while(seconde != 0 || minute != 0){
     screen.clear();
     screen.setCursor(0,0);
@@ -171,9 +172,10 @@ void loop()
   
   if (testpH){ //Mesure du pH 
     digitalWrite(testpHLEDPin,LOW);
-    int compteurPH=0;
+    ;
+    Serial.println(compteurPH);
     while(compteurPH<tempsTestPH){
-    
+      
     static unsigned long samplingTime = millis();
     static unsigned long printTime = millis();
     static float pHValue,voltage;
@@ -202,6 +204,7 @@ void loop()
     
     delay(100);
     }
+    
   }
   
   if (calibNeutre){ // Calibration sonde pH dans solution neutre
@@ -265,4 +268,5 @@ void loop()
       compteur=0;
   }
   delay(100); 
+  compteurPH=0;
 }
