@@ -32,7 +32,7 @@ const int tempsTestPH = 30000; //RISQUE D ETRE TROP GRAND, PENSER A CHANGER LE T
 const int maintenanceButtonPin = 10; //gestion des boutons
 const int maintenanceLEDPin=9;
 bool maintenance=false;  
-const int TempsMaintenance = 0;
+const int TempsMaintenance = 1;
 
 const int testpHButtonPin = 8;
 const int testpHLEDPin = 7;
@@ -163,11 +163,21 @@ void loop()
         minute--;
         seconde=60;
       }
-      delay(1000);
+
+      for(int i=0;i<10;i++){
+         delay(100);
+         maintenance = not(digitalRead(maintenanceButtonPin));
+         if(maintenance){
+          minute=TempsMaintenance;
+          seconde=60;
+      }
+        }
       seconde--;
+
+      
+      }
+      
     }
-    
-  }
    
   
   if (testpH){ //Mesure du pH 
