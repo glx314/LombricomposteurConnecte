@@ -129,17 +129,17 @@ void loop()
   Serial.println(DS18B20_temperature);
   
   humidity=analogRead(humiditySensorPin);
-  pHumidity=map(humidity,0,680,0,100);
+  pHumidity=map(humidity,0,605,0,100);
   Serial.println(pHumidity); // ATTENTION : TESTER LES VALEURS POUR MAPPER EN RECEVANT LE CAPTEUR
 
   screen.clear();
   screen.setCursor(0,0);
-  screen.print("Temperature :");
+  screen.print("Temp :");
   screen.print(DS18B20_temperature);
-  screen.println("C");
+  screen.println(" °C  ");
   screen.setCursor(0,1);
   screen.print("Humidite :");
-  screen.print(humidity);
+  screen.print(pHumidity);
   screen.print("%");
 
   }
