@@ -1,6 +1,19 @@
+#include <TheThingsNetwork.h>
+#include <LoraEncoder.h>
 #include <OneWire.h> 
 #include <DallasTemperature.h>
+#include <LiquidCrystal.h>
 /********************************************************************/
+
+// Set your AppEUI and AppKey
+const char *appEui = "0000000000000000";
+const char *appKey = "97a685c64a870a4f72db1015b81dcaf3";
+#define loraSerial Serial1
+#define debugSerial Serial
+#define freqPlan TTN_FP_EU868
+
+TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);
+
 // Data wire is plugged into pin 2 on the Arduino 
 #define ONE_WIRE_BUS 2 
 /********************************************************************/
@@ -10,7 +23,6 @@ OneWire oneWire(ONE_WIRE_BUS);
 /********************************************************************/
 // Pass our oneWire reference to Dallas Temperature. 
 DallasTemperature sensors(&oneWire);
-#include <LiquidCrystal.h>
 
 LiquidCrystal screen(12,11,A2,A3,A4,A5);
 
@@ -94,7 +106,8 @@ double avergearray(int* arr, int number){
 
 void setup()
 {
-  Serial.begin(9600);
+  loraSerial.begin(57600);
+  debugSerial.begin(9600);
   screen.begin(16,2);
   screen.clear();
   sensors.begin();
@@ -108,11 +121,22 @@ void setup()
   pinMode(calibAcidLEDPin,OUTPUT);
   pinMode(ONE_WIRE_BUS,INPUT);
   pinMode(humiditySensorPin,INPUT);
+   // Wait a maximum of 10s for Serial Monitor
+  while (!debugSerial && millis() < 10000)
+    ;
+
+  debugSerial.println("-- STATUS");
+  ttn.showStatus();
+  
+  debugSerial.println("-- JOIN");
+  ttn.join(appEui, appKey);
   
 }
 
 void loop()
 {
+  
+  
   digitalWrite(maintenanceLEDPin,HIGH); //Activation des leds
   digitalWrite(testpHLEDPin,HIGH);
   digitalWrite(calibNeutreLEDPin,HIGH);
@@ -124,6 +148,7 @@ void loop()
   calibAcid=not(digitalRead(calibAcidButtonPin));
   
   if(compteur==3000){
+    debugSerial.println("-- LOOP");
     sensors.requestTemperatures();
   DS18B20_temperature = sensors.getTempCByIndex(0); //Mesure température
   Serial.println(DS18B20_temperature);
@@ -141,6 +166,13 @@ void loop()
   screen.print("Humidite :");
   screen.print(pHumidity);
   screen.print("%");
+
+   byte buffer[4];
+    LoraEncoder encoder(buffer);
+    encoder.writeTemperature(DS18B20_temperature);
+    encoder.writeHumidity(pHumidity);
+    
+  ttn.sendBytes(buffer,sizeof(buffer));
 
   }
   
