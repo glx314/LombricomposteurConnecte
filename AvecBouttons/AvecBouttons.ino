@@ -161,7 +161,7 @@ void loop()
   screen.setCursor(0,0);
   screen.print("Temp :");
   screen.print(DS18B20_temperature);
-  screen.println(" °C  ");
+  screen.println(" sC  ");
   screen.setCursor(0,1);
   screen.print("Humidite :");
   screen.print(pHumidity);
