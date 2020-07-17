@@ -48,7 +48,7 @@ const int TempsMaintenance = 1;
 const int testpHButtonPin = 8;
 const int testpHLEDPin = 7;
 bool testpH=false;
-int compteurPH=0;
+
 
 const int calibNeutreButtonPin=6;
 const int calibNeutreLEDPin = 5;
@@ -181,7 +181,26 @@ void loop()
 
   }
   
-  if (maintenance){ //Maintenance : on ne prend plus de mesures
+  if (maintenance){fMaintenance();}
+  
+  if (testpH){fTestpH();}
+  
+  if (calibNeutre){fCalibNeutre();}
+  
+  if (calibAcid){ fCalibAcide();}
+   
+  compteur+=100;
+  if(compteur>3000){
+      compteur=0;
+  }
+  
+  delay(100); 
+  
+}
+
+
+void fMaintenance(){
+       //Maintenance : on ne prend plus de mesures
     digitalWrite(maintenanceLEDPin,HIGH);
     int minute=TempsMaintenance;
     int seconde=10;
@@ -215,11 +234,11 @@ void loop()
       }
       
     }
-   
+
+void fTestpH(){//Mesure du pH 
   
-  if (testpH){ //Mesure du pH 
     digitalWrite(testpHLEDPin,HIGH);
-    Serial.println(compteurPH);
+    int compteurPH=0;
     while(compteurPH<tempsTestPH){
       
     static unsigned long samplingTime = millis();
@@ -252,8 +271,9 @@ void loop()
     }
     
   }
-  
-  if (calibNeutre){ // Calibration sonde pH dans solution neutre
+
+void fCalibNeutre(){
+     // Calibration sonde pH dans solution neutre
     digitalWrite(calibNeutreLEDPin,HIGH);
     int compteurPHN=0;
     while(compteurPHN<tempsCalibPH){
@@ -286,8 +306,9 @@ void loop()
   Offset = 4-(3*VA)/(V0-VA);
     
   }
-  
-  if (calibAcid){ // Calibration sonde pH dans solution acide
+
+ void fCalibAcide(){
+    // Calibration sonde pH dans solution acide
     digitalWrite(calibAcidLEDPin,HIGH);
     int compteurPHA=0;
     while(compteurPHA<tempsCalibPH){
@@ -320,12 +341,5 @@ void loop()
     pente=3/(V0-VA);
     Offset = 4 -(3*VA)/(V0-VA) ;
   
-  }
-   
-  compteur+=100;
-  if(compteur>3000){
-      compteur=0;
-  }
-  delay(100); 
-  compteurPH=0;
-}
+    
+    }
