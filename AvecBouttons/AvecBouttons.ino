@@ -33,7 +33,6 @@ int humidity;
 int pHumidity;
 
 const int pHSensorPin = A1 ; //réglages pH
-float pHOffset=0.00;
 const int samplingInterval = 20;
 const int printInterval = 800;
 const int ArrayLenth = 40 ;
@@ -55,11 +54,17 @@ const int calibNeutreButtonPin=6;
 const int calibNeutreLEDPin = 5;
 bool calibNeutre=false;
 
+
 const int calibAcidButtonPin=4;
 const int calibAcidLEDPin=3;
 bool calibAcid=false;
 int tempsCalibPH = 30000;
 int compteur=0;
+float pente = 3.5;
+float Offset = 0;
+float VA;
+float V0;
+
 
 double avergearray(int* arr, int number){
   int i;
@@ -137,10 +142,10 @@ void loop()
 {
   
   
-  digitalWrite(maintenanceLEDPin,HIGH); //Activation des leds
-  digitalWrite(testpHLEDPin,HIGH);
-  digitalWrite(calibNeutreLEDPin,HIGH);
-  digitalWrite(calibAcidLEDPin,HIGH);
+  digitalWrite(maintenanceLEDPin,LOW); //Activation des leds
+  digitalWrite(testpHLEDPin,LOW);
+  digitalWrite(calibNeutreLEDPin,LOW);
+  digitalWrite(calibAcidLEDPin,LOW);
 
   maintenance = not(digitalRead(maintenanceButtonPin));
   testpH=not(digitalRead(testpHButtonPin));
@@ -159,25 +164,25 @@ void loop()
 
   screen.clear();
   screen.setCursor(0,0);
-  screen.print("Temp :");
+  screen.print("Temp : ");
   screen.print(DS18B20_temperature);
-  screen.println(" sC  ");
+  screen.print(" ");
+  screen.print((char)223);
+  screen.println("C     ");
   screen.setCursor(0,1);
-  screen.print("Humidite :");
+  screen.print("Humidite : ");
   screen.print(pHumidity);
-  screen.print("%");
+  screen.print(" %");
 
    byte buffer[4];
-    LoraEncoder encoder(buffer);
-    encoder.writeTemperature(DS18B20_temperature);
-    encoder.writeHumidity(pHumidity);
+    
     
   ttn.sendBytes(buffer,sizeof(buffer));
 
   }
   
   if (maintenance){ //Maintenance : on ne prend plus de mesures
-    digitalWrite(maintenanceLEDPin,LOW);
+    digitalWrite(maintenanceLEDPin,HIGH);
     int minute=TempsMaintenance;
     int seconde=10;
     while(seconde != 0 || minute != 0){
@@ -213,8 +218,7 @@ void loop()
    
   
   if (testpH){ //Mesure du pH 
-    digitalWrite(testpHLEDPin,LOW);
-    ;
+    digitalWrite(testpHLEDPin,HIGH);
     Serial.println(compteurPH);
     while(compteurPH<tempsTestPH){
       
@@ -227,7 +231,7 @@ void loop()
       pHArray[pHArrayIndex++]=analogRead(pHSensorPin);
       if(pHArrayIndex==ArrayLenth)pHArrayIndex=0;
       voltage = avergearray(pHArray, ArrayLenth)*5.0/1024;
-      pHValue = 3.5*voltage+pHOffset;
+      pHValue = pente*voltage+Offset;
       samplingTime=millis();
   }
   if(millis() - printTime > printInterval)   //Every 800 milliseconds, print a numerical, convert the state of the LED indicator
@@ -250,45 +254,54 @@ void loop()
   }
   
   if (calibNeutre){ // Calibration sonde pH dans solution neutre
-    digitalWrite(calibNeutreLEDPin,LOW);
+    digitalWrite(calibNeutreLEDPin,HIGH);
+    int compteurPHN=0;
+    while(compteurPHN<tempsCalibPH){
     static unsigned long samplingTime = millis();
-  static unsigned long printTime = millis();
-  static float pHValue,voltage;
+    static unsigned long printTime = millis();
+    static float pHValue,voltage;
   if(millis()-samplingTime > samplingInterval)
   {
       pHArray[pHArrayIndex++]=analogRead(pHSensorPin);
       if(pHArrayIndex==ArrayLenth)pHArrayIndex=0;
-      voltage = avergearray(pHArray, ArrayLenth)*5.0/1024;
-      pHValue = 3.5*voltage+pHOffset;
+      V0 = avergearray(pHArray, ArrayLenth)*5.0/1024;
+      voltage=V0;
+      pHValue = pente*voltage + Offset;
       samplingTime=millis();
   }
   if(millis() - printTime > printInterval)   //Every 800 milliseconds, print a numerical, convert the state of the LED indicator
   {
-    
-        pHOffset=7-pHValue;
-        screen.clear();
-         screen.setCursor(0,0);
-         screen.print("pH = ");
-         screen.print(pHValue);
-         printTime=millis();
+    screen.clear();
+    screen.setCursor(0,0);
+    screen.print("pH = ");
+    screen.print(pHValue);
+    printTime=millis();
   }
-    delay(3000);
+
+    compteurPHN+=100; 
+    delay(100);
+    }
+
+  pente=3/(V0-VA);
+  Offset = 4-(3*VA)/(V0-VA);
     
   }
   
   if (calibAcid){ // Calibration sonde pH dans solution acide
-    digitalWrite(calibAcidLEDPin,LOW);
+    digitalWrite(calibAcidLEDPin,HIGH);
     int compteurPHA=0;
     while(compteurPHA<tempsCalibPH){
     static unsigned long samplingTime = millis();
   static unsigned long printTime = millis();
   static float pHValue,voltage;
+  
   if(millis()-samplingTime > samplingInterval)
   {
       pHArray[pHArrayIndex++]=analogRead(pHSensorPin);
       if(pHArrayIndex==ArrayLenth)pHArrayIndex=0;
-      voltage = avergearray(pHArray, ArrayLenth)*5.0/1024;
-      pHValue = 3.5*voltage+pHOffset;
+      VA = avergearray(pHArray, ArrayLenth)*5.0/1024;
+      voltage=VA;
+      pHValue = pente*voltage+Offset;
       samplingTime=millis();
   }
   if(millis() - printTime > printInterval)   //Every 800 milliseconds, print a numerical, convert the state of the LED indicator
@@ -303,6 +316,10 @@ void loop()
     compteurPHA+=100; 
     delay(100);
     }
+
+    pente=3/(V0-VA);
+    Offset = 4 -(3*VA)/(V0-VA) ;
+  
   }
    
   compteur+=100;
