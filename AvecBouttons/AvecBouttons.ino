@@ -118,7 +118,13 @@ void loop(){
     Serial.println(DS18B20_temperature);
   
     
-    pHumidity=map(humidity,0,605,0,100);
+    //switch (humidity){
+      //case humidity>
+      
+      
+      
+      pHumidity=map(humidity,0,600,0,100);
+    Serial.println(humidity);
     Serial.println(pHumidity); // ATTENTION : TESTER LES VALEURS POUR MAPPER EN RECEVANT LE CAPTEUR
 
     screen.clear();
