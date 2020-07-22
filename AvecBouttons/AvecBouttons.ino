@@ -24,6 +24,7 @@ OneWire oneWire(ONE_WIRE_BUS);
 // Pass our oneWire reference to Dallas Temperature. 
 DallasTemperature sensors(&oneWire);
 
+
 LiquidCrystal screen(12,11,A2,A3,A4,A5);
 
 const int TempsReleve = 10000;
@@ -62,6 +63,8 @@ const int calibAcidLEDPin=3;
 bool calibAcid=false;
 int tempsCalibPH = 30000;
 int compteur=0;
+
+
 float pente = 3.5;
 float Offset = 0;
 float VA;
@@ -116,16 +119,10 @@ void loop(){
     debugSerial.println("-- LOOP");
      //Mesure température
     Serial.println(DS18B20_temperature);
-  
+    pHumidity=map(humidity,0,600,0,100);
     
-    //switch (humidity){
-      //case humidity>
-      
-      
-      
-      pHumidity=map(humidity,0,600,0,100);
     Serial.println(humidity);
-    Serial.println(pHumidity); // ATTENTION : TESTER LES VALEURS POUR MAPPER EN RECEVANT LE CAPTEUR
+    Serial.println(pHumidity);
 
     screen.clear();
     screen.setCursor(0,0);
@@ -141,11 +138,14 @@ void loop(){
 
     byte TPayload[2];
     int sizeT=sizeof(TPayload);
+    
     byte HPayload[1];
     int sizeH=sizeof(HPayload);
+    
     int T=round(DS18B20_temperature*10.0);
     TPayload[0]=highByte(T);
     TPayload[1]=lowByte(T);
+    
     byte H;
     H=(int)pHumidity;
     HPayload[0]=H;
@@ -156,9 +156,11 @@ void loop(){
     
     
     ttn.sendBytes(payload,sizeof(payload));
+
+    
     for(int i=0;i<sizeof(payload);i++){
-      Serial.print(payload[i]);
-      Serial.print(";");
+        Serial.print(payload[i]);
+        Serial.print(";");
     }
     Serial.println("");
 
@@ -181,6 +183,7 @@ void loop(){
   
 }
 
+//Fonctions pour les boutons
 
 void fMaintenance(){
        //Maintenance : on ne prend plus de mesures
