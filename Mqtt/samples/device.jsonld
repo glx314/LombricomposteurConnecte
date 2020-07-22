@@ -1,0 +1,7 @@
+{
+	
+	"id":"urn:ngsi-ld:Device:01",
+	"type":"Device"
+	"@context":[
+	]
+}

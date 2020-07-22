@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import ssl
 import json
 from base64 import b64decode
+import requests
 
 def on_connect(client, userdata, flags, rc):
     if rc != 0:
@@ -24,9 +25,45 @@ def on_message(client, userdata, message):
 
     print(f'\nTemperature : {fTemp} °C \nHumidité : {Hum}%')
 
-    payload=json.dumps({'Temperature':ftemp, 'Humidité':Hum})
+    donneesTemp=f"""
+                    
+    {{
+	    "temperature":{{
+	    	"type":"Property",
+	    	"value":{fTemp},
+		    "observedBy":{{
+			    "type":"Relationship",
+			    "object":"urn:ngsi-ld:Device:01"
+		    }}
+	    }}
 
-    client.publish("application/31/device/0004a30b001bad84/decoded",payload,retain=False)
+	    "@context": [
+	
+	    ]
+    }}"""
+
+    donneesHum = f"""
+
+        {{
+    	    "humidity":{{
+    	    	"type":"Property",
+    	    	"value":{Hum},
+    		    "observedBy":{{
+    			    "type":"Relationship",
+    			    "object":"urn:ngsi-ld:Device:01"
+    		    }}
+    	    }}
+
+    	    "@context": [
+
+    	    ]
+        }}"""
+    client.publish("application/31/device/0004a30b001bad84/decoded",donnees)
+    
+    url=""
+
+    requests.patch(url, data = json.loads(donneesTemp))
+    requests.patch(url, data = json.loads(donneesHum))
 
 
 
