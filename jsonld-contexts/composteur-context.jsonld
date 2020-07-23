@@ -1,0 +1,9 @@
+{
+    "@context": {
+        "Composteur": "https://ontology.eglobalmark.com/waste#Composteur",
+ 	"observedBy": "https://ontology.eglobalmark.com/waste#observedBy",
+	"temperature": "https://ontology.eglobalmark.com/waste#temperature",
+        "humidity": "https://ontology.eglobalmark.com/waste#humidity",
+	"Device": "https://ontology.eglobalmark.com/waste#Device"
+    }
+}
