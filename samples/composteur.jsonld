@@ -1,28 +1,25 @@
 {
-
-	"id":"urn:ngsi-ld:Composteur:01",
-	"type":"Composteur",
-	"temperature":{
-		"type":"Property",
-		"value":0.0,
-		"observedBy":{
-			"type":"Relationship",
-			"object":"urn:ngsi-ld:Device:01"
-		}
-	}
-	"humidity":{
-		"type":"Property",
-		"value":0,
-		"observedBy":{
-			"type":"Relationship",
-			"object":"urn:ngsi-ld:Device:01"
-		}
-	}
-
-	"@context": ["https://raw.githubusercontent.com/GuitouBDA/ArduinoCompost/guillaume/jsonld-contexts/composteur-context.jsonld",
-                      "http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
-			"https://raw.githubusercontent.com/easy-global-market/ngsild-api-data-models/master/apic/jsonld-contexts/apic-compound.jsonld"
-	
-	]
+   "id":"urn:ngsi-ld:Composteur:01",
+   "type":"Composteur",
+   "temperature":{
+      "type":"Property",
+      "value":0.0,
+      "observedBy":{
+         "type":"Relationship",
+         "object":"urn:ngsi-ld:Device:01"
+      }
+   },
+   "humidity":{
+      "type":"Property",
+      "value":0,
+      "observedBy":{
+         "type":"Relationship",
+         "object":"urn:ngsi-ld:Device:01"
+      }
+   },
+   "@context":[
+      "https://raw.githubusercontent.com/GuitouBDA/ArduinoCompost/guillaume/jsonld-contexts/composteur-context.jsonld",
+      "http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+      "https://raw.githubusercontent.com/easy-global-market/ngsild-api-data-models/master/apic/jsonld-contexts/apic-compound.jsonld"
+   ]
 }
-	
