@@ -23,40 +23,23 @@ def on_message(client, userdata, message):
     fTemp=iTemp/10
     Hum=int(sHum,16)
 
-    print(f'\nTemperature : {fTemp} °C \nHumidité : {Hum}%')
+    donnees = f'\nTemperature : {fTemp} °C \nHumidité : {Hum}%'
 
-    donneesTemp=f"""
-                    
-    {{
-	    "temperature":{{
-	    	"type":"Property",
-	    	"value":{fTemp},
-		    "observedBy":{{
-			    "type":"Relationship",
-			    "object":"urn:ngsi-ld:Device:01"
-		    }}
-	    }}
-    }}"""
+    print(donnees)
 
-    donneesHum = f"""
+    donneesTemp ={"temperature":{ "type":"Property", "value":fTemp, "observedBy":{ "type":"Relationship", "object":"urn:ngsi-ld:Device:01"}}}
 
-        {{
-    	    "humidity":{{
-    	    	"type":"Property",
-    	    	"value":{Hum},
-    		    "observedBy":{{
-    			    "type":"Relationship",
-    			    "object":"urn:ngsi-ld:Device:01"
-    		    }}
-    	    }}
-        }}"""
+    donneesHum = {"humidity":{"type":"Property","value":Hum,"observedBy":{"type":"Relationship","object":"urn:ngsi-ld:Device:01"}}}
+
+    url = "http PATCH https://data-hub.eglobalmark.com/ngsi-ld/v1/entities/urn:ngsi-ld:Composteur:01/attrs"
+
+    rt = requests.patch(url, data=donneesTemp)
+    rh = requests.patch(url, data=donneesHum)
+    print("\n", rt, " : ", rt.content)
+    print("\n", rh, " : ", rh.content)
 
     client.publish("application/31/device/0004a30b001bad84/decoded",donnees)
     
-    url="http PATCH https://data-hub.eglobalmark.com/ngsi-ld/v1/entities/urn:ngsi-ld:Composteur:01/attrs"
-
-    requests.patch(url, data = json.loads(donneesTemp))
-    requests.patch(url, data = json.loads(donneesHum))
 
 
 
