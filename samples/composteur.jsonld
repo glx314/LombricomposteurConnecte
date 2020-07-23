@@ -9,6 +9,7 @@
 			"type":"Relationship",
 			"object":"urn:ngsi-ld:Device:01"
 		}
+	}
 	"humidity":{
 		"type":"Property",
 		"value":0,
@@ -18,7 +19,8 @@
 		}
 	}
 
-	"@context": [
+	"@context": ["https://github.com/GuitouBDA/ArduinoCompost/blob/guillaume/jsonld-contexts/composteur-context.jsonld",
+                      "http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
 	
 	]
 }

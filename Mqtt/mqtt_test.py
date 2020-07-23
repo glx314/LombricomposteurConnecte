@@ -36,10 +36,6 @@ def on_message(client, userdata, message):
 			    "object":"urn:ngsi-ld:Device:01"
 		    }}
 	    }}
-
-	    "@context": [
-	
-	    ]
     }}"""
 
     donneesHum = f"""
@@ -53,14 +49,11 @@ def on_message(client, userdata, message):
     			    "object":"urn:ngsi-ld:Device:01"
     		    }}
     	    }}
-
-    	    "@context": [
-
-    	    ]
         }}"""
+
     client.publish("application/31/device/0004a30b001bad84/decoded",donnees)
     
-    url=""
+    url="http PATCH https://data-hub.eglobalmark.com/ngsi-ld/v1/entities/urn:ngsi-ld:Composteur:01/attrs"
 
     requests.patch(url, data = json.loads(donneesTemp))
     requests.patch(url, data = json.loads(donneesHum))

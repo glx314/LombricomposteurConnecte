@@ -2,6 +2,7 @@
 	
 	"id":"urn:ngsi-ld:Device:01",
 	"type":"Device"
-	"@context":[
+	"@context":["https://github.com/GuitouBDA/ArduinoCompost/blob/guillaume/jsonld-contexts/composteur-context.jsonld",
+                    "http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
 	]
 }
