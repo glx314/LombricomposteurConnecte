@@ -29,7 +29,7 @@ def on_message(client, userdata, message):
     print(f"RX:{message.topic}:{message.payload}")
     decoded = json.loads(message.payload)
     data = b64decode(decoded['data'])
-    print(f'Data : {data}\n')
+    print(f'\nData : {data}\n')
     b=data.hex()
     sTemp=b[:4]
     sHum=b[4:]
