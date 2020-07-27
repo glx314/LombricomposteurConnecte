@@ -41,17 +41,18 @@ const int printInterval = 800;
 const int ArrayLenth = 40 ;
 int pHArray[ArrayLenth];
 int pHArrayIndex=0;
-const int tempsTestPH = 30000; //RISQUE D ETRE TROP GRAND, PENSER A CHANGER LE TYPE
+const long tempsTestPH = 50000; //RISQUE D ETRE TROP GRAND, PENSER A CHANGER LE TYPE
 
 const int maintenanceButtonPin = 10; //gestion des boutons
 const int maintenanceLEDPin=9;
 bool maintenance=false;  
-const int TempsMaintenance = 1;
+const int TempsMaintenance = 59;
 
 const int testpHButtonPin = 8;
 const int testpHLEDPin = 7;
 bool testpH=false;
 
+bool arret = false;
 
 const int calibNeutreButtonPin=6;
 const int calibNeutreLEDPin = 5;
@@ -61,7 +62,7 @@ bool calibNeutre=false;
 const int calibAcidButtonPin=4;
 const int calibAcidLEDPin=3;
 bool calibAcid=false;
-int tempsCalibPH = 30000;
+const long tempsCalibPH = 50000;
 int compteur=0;
 
 
@@ -111,13 +112,15 @@ void loop(){
   testpH=not(digitalRead(testpHButtonPin));
   calibNeutre=not(digitalRead(calibNeutreButtonPin));
   calibAcid=not(digitalRead(calibAcidButtonPin));
-  sensors.requestTemperatures();
-  DS18B20_temperature = sensors.getTempCByIndex(0);
-  humidity=analogRead(humiditySensorPin);
+  
+  
   
   if(compteur==TempsReleve){
     debugSerial.println("-- LOOP");
      //Mesure température
+    sensors.requestTemperatures();
+    DS18B20_temperature = sensors.getTempCByIndex(0);
+    humidity=analogRead(humiditySensorPin);
     Serial.println(DS18B20_temperature);
     pHumidity=map(humidity,0,600,0,100);
     
@@ -174,12 +177,12 @@ void loop(){
   
   if (calibAcid){ fCalibAcide();}
    
-  compteur+=5000;
+  compteur+=100;
   if(compteur>TempsReleve){
       compteur=0;
   }
   
-  delay(5000); 
+  delay(100); 
   
 }
 
@@ -188,9 +191,11 @@ void loop(){
 void fMaintenance(){
        //Maintenance : on ne prend plus de mesures
     digitalWrite(maintenanceLEDPin,HIGH);
+    
     int minute=TempsMaintenance;
     int seconde=10;
     while(seconde != 0 || minute != 0){
+    arret=false;
     screen.clear();
     screen.setCursor(0,0);
     screen.print("Maintenance");
@@ -211,21 +216,26 @@ void fMaintenance(){
     for(int i=0;i<10;i++){
         delay(100);
         maintenance = not(digitalRead(maintenanceButtonPin));
+        arret=not(digitalRead(testpHButtonPin));
         if(maintenance){
           minute=TempsMaintenance;
           seconde=60;
           }
+        if(arret){
+          minute=0;
+          seconde=10;
+          }
         }
       
     seconde--;
-      }
+    }
       
    }
 
 void fTestpH(){//Mesure du pH 
   
     digitalWrite(testpHLEDPin,HIGH);
-    int compteurPH=0;
+    long compteurPH=0;
     while(compteurPH<tempsTestPH){
       static unsigned long samplingTime = millis();
       static unsigned long printTime = millis();
@@ -258,7 +268,7 @@ void fTestpH(){//Mesure du pH
 void fCalibNeutre(){
      // Calibration sonde pH dans solution neutre
     digitalWrite(calibNeutreLEDPin,HIGH);
-    int compteurPHN=0;
+    long compteurPHN=0;
     while(compteurPHN<tempsCalibPH){
         static unsigned long samplingTime = millis();
         static unsigned long printTime = millis();
@@ -293,7 +303,7 @@ void fCalibNeutre(){
  void fCalibAcide(){
     // Calibration sonde pH dans solution acide
     digitalWrite(calibAcidLEDPin,HIGH);
-    int compteurPHA=0;
+    long compteurPHA=0;
     while(compteurPHA<tempsCalibPH){
         static unsigned long samplingTime = millis();
         static unsigned long printTime = millis();
