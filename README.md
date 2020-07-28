@@ -13,13 +13,14 @@ Paramètres optimaux du compost:
 		- Aération -> endroit bien aéré
 
 A PROPOS DU PROJET :
+
 	CONTRAINTES : 
 		Le compost doit être retourné régulièrement + cuve fermée (pour la lumière).
 		durée de vie des équipements
 		prix des équipements
 
 	CAPTEURS RETENUS:
-		Voir Hardware.txt (  )
+		Voir Hardware.txt ( https://github.com/GuitouBDA/ArduinoCompost/blob/guillaume/Hardware.txt )
 
 	PLACEMENT DES CAPTEURS : /!\ contraintes
     
