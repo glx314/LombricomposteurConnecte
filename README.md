@@ -1,6 +1,7 @@
 Quelques informations sur le compost :
 
 Paramètres optimaux du compost:
+
 	Avec capteurs :
 		- Température -> entre 15 et 25 celsius
 		- Humidité -> entre 75 et 85%
@@ -28,7 +29,7 @@ A PROPOS DU PROJET :
 
 		Sonde pH : pour une mesure, à placer dans le seau qui récolte le percolat.Les relevés sont ponctuels, la sonde ne doit pas restée immergée.
 
-	UTILISATION : Voir Notice.txt ( ) 
+	UTILISATION : Voir Notice.txt ( https://github.com/GuitouBDA/ArduinoCompost/blob/guillaume/Notice.txt ) 
 
 	AMELIORATIONS POSSIBLE : 
 		Notification quand un paramètre sort des normes ou connait une évolution anormale.
