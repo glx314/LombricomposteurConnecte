@@ -1,44 +1,42 @@
-<<<<<<< HEAD
 # ArduinoCompost
 =======
 Quelques informations sur le compost :
 
-ParamËtres optimaux du compost:
+Param√®tres optimaux du compost:
 
 	Avec capteurs :
-		- TempÈrature -> entre 15 et 25 celsius
-		- HumiditÈ -> entre 75 et 85%
-		- gaz -> 30:1 carbon/azote + 10% oxygËne
-		- pH percolat (et gÈnÈral) -> entre 6.5 et 8. (besoin de traitement ultÈrieur, percolat doit faire del'engrais acide)
+		- Temp√©rature -> entre 15 et 25 celsius
+		- Humidit√© -> entre 75 et 85%
+		- gaz -> 30:1 carbon/azote + 10% oxyg√®ne
+		- pH percolat (et g√©n√©ral) -> entre 6.5 et 8. (besoin de traitement ult√©rieur, percolat doit faire del'engrais acide)
 
 	Sans capteurs :
-		- LumiËre -> endroit sombre
+		- Lumi√®re -> endroit sombre
 		- Bruit -> endroit calme
-		- AÈration -> endroit bien aÈrÈ
+		- A√©ration -> endroit bien a√©r√©
 
 A PROPOS DU PROJET :
 
 	CONTRAINTES : 
-		Le compost doit Ítre retournÈ rÈguliËrement + cuve fermÈe (pour la lumiËre).
-		durÈe de vie des Èquipements
-		prix des Èquipements
+		Le compost doit √™tre retourn√© r√©guli√®rement + cuve ferm√©e (pour la lumi√®re).
+		dur√©e de vie des √©quipements
+		prix des √©quipements
 
 	CAPTEURS RETENUS:
 		Voir Hardware.txt ( https://github.com/GuitouBDA/ArduinoCompost/blob/guillaume/Hardware.txt )
 
 	PLACEMENT DES CAPTEURS : /!\ contraintes
     
-		Temperature/humiditÈ : deux sondes filaires plongÈes dans le compost
+		Temperature/humidit√© : deux sondes filaires plong√©es dans le compost
 
-		Sonde pH : pour une mesure, ‡ placer dans le seau qui rÈcolte le percolat.Les relevÈs sont ponctuels, la sonde ne doit pas restÈe immergÈe.
+		Sonde pH : pour une mesure, √† placer dans le seau qui r√©colte le percolat.Les relev√©s sont ponctuels, la sonde ne doit pas rest√©e immerg√©e.
 
 	UTILISATION : Voir Notice.txt ( https://github.com/GuitouBDA/ArduinoCompost/blob/guillaume/Notice.txt ) 
 
 	AMELIORATIONS POSSIBLE : 
-		Notification quand un paramËtre sort des normes ou connait une Èvolution anormale.
+		Notification quand un param√®tre sort des normes ou connait une √©volution anormale.
 		Mesurer la masse du compost pour determiner la masse de terreau/de vers.
 
 	INTERFACE UTILISATEUR
-		DonnÈes poussÈes dans Stellio (voir wiki).
-		Dashboard ‡ implÈmenter.
->>>>>>> f1b0cab615d31e9ed564b0e0c91c1d46a67a3d94
+		Donn√©es pouss√©es dans Stellio (voir wiki).
+		Dashboard √† impl√©menter.
