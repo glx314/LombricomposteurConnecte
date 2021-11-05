@@ -1,0 +1,21 @@
+HARDWARE
+
+Carte : Arduino The Things Uno ( https://www.thethingsnetwork.org/docs/devices/uno/ )
+Shield
+Veroboard pour les branchements ( voir schéma  )
+
+Adaptateur 220V -> 9V pour pouvoir brancher sur secteur ( https://eu.mouser.com/productdetail/mean-well/irm-03-9?qs=NKmfXavxMaxcV0A1flSU4Q== )
+
+Ecran LCD ( https://euro-makers.com/fr/ecrans-et-accessoires-lcd/1860-ecran-lcd-1602-retroeclaire-bleu-3701172908039.html )
+
+
+CAPTEURS
+
+Température : sonde étanche S18B20 ( https://www.gotronic.fr/art-sonde-etanche-ds18b20-19339.htm ) 
+
+Humidité : Capteur d'humidité pour les sols GT110 ( https://www.gotronic.fr/art-capteur-d-humidite-gt110-26091.htm )
+	
+pH :  sonde + interface SEN0161 ( https://www.gotronic.fr/art-sonde-ph-interface-sen0161-21552.htm )
+	
+
+	

@@ -1,0 +1,5 @@
+{
+    "@context": {
+        "Composteur": "https://ontology.eglobalmark.com/waste#Composteur"
+    }
+}

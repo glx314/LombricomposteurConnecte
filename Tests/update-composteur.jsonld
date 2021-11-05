@@ -1,0 +1,10 @@
+{   "temperature":{      "type":"Property",
+      "value":"fTemp",
+      "observedBy":{
+         "type":"Relationship",
+         "object":"urn:ngsi-ld:Device:01"
+      
+}
+   
+}
+}
